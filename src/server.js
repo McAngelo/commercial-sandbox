@@ -10,6 +10,10 @@ import appRoutes from './routes/app.routes';
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
 import productRoutes from './routes/product.routes';
+// Sand box routes
+import naloRoutes from './routes/nalo.routes';
+import wigalRoutes from './routes/wigal.routes';
+import anmRoutes from './routes/anm.routes';
 
 import AppError from './utils/appError';
 import catchAsync from './utils/catchAsync';
@@ -32,7 +36,16 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', userRoutes);
 
 // products routes
-app.use('/api/v1/product', productRoutes);
+//app.use('/api/v1/product', productRoutes);
+
+// Nalo routes
+app.use('/api/v1/nalo', naloRoutes);
+
+// Wigal routes
+app.use('/api/v1/wigal', wigalRoutes);
+
+// Apps and Mobile routes
+app.use('/api/v1/anm', anmRoutes);
 
 app.all(/.*/, catchAsync(async (req, res, next) => {
     throw new AppError(`Can't find ${req.originalUrl} on this server!`, StatusCodes.NOT_FOUND);

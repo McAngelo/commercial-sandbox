@@ -11,7 +11,7 @@ const productRoutes = express.Router();
  * /api/v1/product:
  *   post:
  *     summary: Create a new product
- *     tags: [Product]
+ *     tags: [General]
  *     requestBody:
  *       required: true
  *       content:
@@ -78,12 +78,13 @@ const productRoutes = express.Router();
  */
 
 productRoutes.post('/', authController.authentication, authController.restrictTo('0'), productController.createProject);
+
 /**
  * @swagger
  * /api/v1/product:
  *   get:
  *     summary: Add a new user
- *     tags: [Product]
+ *     tags: [General]
  *     responses:
  *       200:
  *         description: User created successfully
@@ -110,7 +111,7 @@ productRoutes.get('/', authController.authentication, authController.restrictTo(
  * /api/v1/product/{id}:
  *   post:
  *     summary: Add a new user
- *     tags: [Product]
+ *     tags: [General]
  *     requestBody:
  *       required: true
  *       content:
@@ -142,12 +143,13 @@ productRoutes.get('/', authController.authentication, authController.restrictTo(
  *         description: Invalid data
  */
 productRoutes.get('/:id', authController.authentication, authController.restrictTo('0'), productController.getProjectById);
+
 /**
  * @swagger
  * /api/v1/product/{id}:
  *   patch:
  *     summary: Add a new user
- *     tags: [Product]
+ *     tags: [General]
  *     requestBody:
  *       required: true
  *       content:
@@ -185,7 +187,7 @@ productRoutes.patch('/:id', authController.authentication, authController.restri
  * /api/v1/product/{id}:
  *   delete:
  *     summary: Add a new user
- *     tags: [Product]
+ *     tags: [General]
  *     responses:
  *       200:
  *         description: User created successfully
