@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import {StatusCodes, getReasonPhrase} from 'http-status-codes';
 import { specs, swaggerUi } from './swagger';
 import dotenv from 'dotenv';
@@ -10,6 +11,7 @@ import appRoutes from './routes/app.routes';
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
 import productRoutes from './routes/product.routes';
+
 // Sand box routes
 import naloRoutes from './routes/nalo.routes';
 import wigalRoutes from './routes/wigal.routes';
@@ -24,6 +26,17 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+
+// Enable CORS for all routes
+app.use(cors());
+
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // allow all origins
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PATCH,PUT,DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 

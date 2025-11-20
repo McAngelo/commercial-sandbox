@@ -8,7 +8,7 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'CodAfric Commercial Sandbox API',
+      title: 'Commercial API Sandboxes',
       version: '1.0.0',
       description: 'A simple API with Swagger documentation, to help you test out commercial sandbox integrations.',
     },
