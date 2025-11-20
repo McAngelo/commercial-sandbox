@@ -30,14 +30,14 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // all default routes
 app.use('/api/v1', appRoutes);
 
-// auth routes
-app.use('/api/v1/auth', authRoutes);
+// products routes
+app.use('/api/v1/product', productRoutes);
 
 // user routes
 app.use('/api/v1/user', userRoutes);
 
-// products routes
-//app.use('/api/v1/product', productRoutes);
+// auth routes
+app.use('/api/v1/auth', authRoutes);
 
 // Nalo routes
 app.use('/api/v1/nalo', naloRoutes);
@@ -50,6 +50,7 @@ app.use('/api/v1/anm', anmRoutes);
 
 // Express Pay Sandbox routes
 app.use('/api/v1/express-pay', expressPayRoutes);
+
 
 app.all(/.*/, catchAsync(async (req, res, next) => {
     throw new AppError(`Can't find ${req.originalUrl} on this server!`, StatusCodes.NOT_FOUND);
