@@ -14,6 +14,7 @@ import productRoutes from './routes/product.routes';
 import naloRoutes from './routes/nalo.routes';
 import wigalRoutes from './routes/wigal.routes';
 import anmRoutes from './routes/anm.routes';
+import expressPayRoutes from './routes/expresspay.routes';
 
 import AppError from './utils/appError';
 import catchAsync from './utils/catchAsync';
@@ -46,6 +47,9 @@ app.use('/api/v1/wigal', wigalRoutes);
 
 // Apps and Mobile routes
 app.use('/api/v1/anm', anmRoutes);
+
+// Express Pay Sandbox routes
+app.use('/api/v1/express-pay', expressPayRoutes);
 
 app.all(/.*/, catchAsync(async (req, res, next) => {
     throw new AppError(`Can't find ${req.originalUrl} on this server!`, StatusCodes.NOT_FOUND);
