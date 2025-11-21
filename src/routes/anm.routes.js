@@ -1,8 +1,9 @@
 import express from 'express';
 import {StatusCodes, getReasonPhrase} from 'http-status-codes';
 import dotenv from 'dotenv';
-dotenv.config();
+import * as anmController from '../controllers/anm.controller.js';
 
+dotenv.config();
 
 const appsAndMobileRoutes = express.Router();
 
@@ -20,12 +21,39 @@ const appsAndMobileRoutes = express.Router();
  *             schema:
  *               type: string
  *               example: Hello, World!
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 // default index endpoint
-appsAndMobileRoutes.get('/', (req, res) => {
-  res.status(StatusCodes.OK);
-  res.send('Hello, World!');
-});
+appsAndMobileRoutes.get('/', anmController.getHealthCheck);
 
 
 
@@ -82,20 +110,39 @@ appsAndMobileRoutes.get('/', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
 
-// default index endpoint
-appsAndMobileRoutes.post('/check_wallet_balance', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "sms_bal": 56,
-    "payout_bal": 3.72,
-    "billpay_bal": 4.4,
-    "available_collect_bal": 359.765,
-    "airtime_bal": 30.9,
-    "actual_collect_bal": 359.765
-  });
-});
+// Check wallet balance endpoint
+appsAndMobileRoutes.post('/check_wallet_balance', anmController.checkWalletBalance);
 
 /* 
 
@@ -200,18 +247,39 @@ appsAndMobileRoutes.post('/check_wallet_balance', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
 
-// default index endpoint
-appsAndMobileRoutes.post('/checkTransaction', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "trans_status": "000/01",
-    "trans_ref": "031059294635",
-    "trans_id": "21870173572",
-    "message": "SUCCESSFUL"
-  });
-});
+// Check transaction endpoint
+appsAndMobileRoutes.post('/checkTransaction', anmController.checkTransaction);
 
 /* 
 
@@ -327,17 +395,40 @@ appsAndMobileRoutes.post('/checkTransaction', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
 
 
-// default index endpoint
-appsAndMobileRoutes.post('/sendSms', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "resp_desc":"Message successfully queued for delivery",
-    "resp_code":"082"
-  });
-});
+// Send SMS endpoint
+appsAndMobileRoutes.post('/sendSms', anmController.sendSms);
 
 /* 
 
@@ -459,16 +550,39 @@ appsAndMobileRoutes.post('/sendSms', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
 
-// default index endpoint
-appsAndMobileRoutes.post('/debit-credit/sendRequest', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "resp_desc": "Request successfully received for processing",
-    "resp_code": "015"
-  });
-});
+// Debit credit send request endpoint
+appsAndMobileRoutes.post('/debit-credit/sendRequest', anmController.debitCreditSendRequest);
 
 /* 
 
@@ -591,16 +705,39 @@ appsAndMobileRoutes.post('/debit-credit/sendRequest', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
 
-// default index endpoint
-appsAndMobileRoutes.post('/debit-credit/sendRequest', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "resp_desc": "Request successfully received for processing",
-    "resp_code": "015"
-  });
-});
+// Air time topup send request endpoint
+appsAndMobileRoutes.post('/air-time-topup/sendRequest', anmController.airTimeTopupSendRequest);
 
 /* 
 
@@ -719,17 +856,40 @@ appsAndMobileRoutes.post('/debit-credit/sendRequest', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
 
 
-// default index endpoint
-appsAndMobileRoutes.post('/bill-payment/sendRequest', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "resp_desc": "Request successfully completed",
-    "resp_code": "027"
-  });
-});
+// Bill payment send request endpoint
+appsAndMobileRoutes.post('/bill-payment/sendRequest', anmController.billPaymentSendRequest);
 
 /* 
 
@@ -848,29 +1008,39 @@ appsAndMobileRoutes.post('/bill-payment/sendRequest', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
 
-// default index endpoint
-appsAndMobileRoutes.post('/ghipss-payment/sendRequest', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "resp_code": "000",
-    "form_url": "https://gigs-test.ghipss.com:7543/EcomPayment/RedirectAuthLink",
-    "form_details": {
-      "MerID": "123",
-      "AcqID": "315",
-      "OrderID": "6582",
-      "MerRespURL": "https://appsnmobileagent.com:8215/return_resp",
-      "PurchaseAmt": "000100",
-      "PurchaseCurrency": 936,
-      "PurchaseCurrencyExponent": 2,
-      "CaptureFlag": "A",
-      "Signature": "IAANKxiU=",
-      "SignatureMethod": "SHA1",
-      "Version": "1.0.0"
-    }
-  });
-});
+// GHIPSS payment send request endpoint
+appsAndMobileRoutes.post('/ghipss-payment/sendRequest', anmController.ghipssPaymentSendRequest);
 
 /* 
 
@@ -987,16 +1157,38 @@ appsAndMobileRoutes.post('/ghipss-payment/sendRequest', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
-// default index endpoint
-appsAndMobileRoutes.post('/account-inquiry/sendRequest', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "resp_code": "027",
-    "resp_desc": "Request successfully completed",
-    "name": "John Doe"
-  });
-});
+// Account inquiry send request endpoint
+appsAndMobileRoutes.post('/account-inquiry/sendRequest', anmController.accountInquirySendRequest);
 
 /* 
 
@@ -1106,22 +1298,38 @@ appsAndMobileRoutes.post('/account-inquiry/sendRequest', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
-// default index endpoint
-appsAndMobileRoutes.post('/verifyID', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "resp_code": "027",
-    "resp_desc": "Request successfully completed",
-    "data": {
-      "name": "XXXXXX",
-      "gender": "M",
-      "verified": "true",
-      "card_valid_start": "2022-01-01",
-      "card_valid_end": "2028-01-02"
-    }
-  });
-});
+// Verify ID endpoint
+appsAndMobileRoutes.post('/verifyID', anmController.verifyId);
 
 /* 
 
@@ -1271,15 +1479,38 @@ appsAndMobileRoutes.post('/verifyID', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
-// default index endpoint
-appsAndMobileRoutes.post('/remittance/sendRequest', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "resp_desc": "Request successfully received for processing",
-    "resp_code": "015"
-  });
-});
+// Remittance send request endpoint
+appsAndMobileRoutes.post('/remittance/sendRequest', anmController.remittanceSendRequest);
 
 /* 
 
@@ -1408,17 +1639,39 @@ appsAndMobileRoutes.post('/remittance/sendRequest', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
 
-// default index endpoint
-appsAndMobileRoutes.post('/third_party_request', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "resp_code": "000",
-    "resp_desc": "Passed",
-    "redirect_url": "https://payments.anmgw.com/payment_page?code=dG9rZW49NDM3MTkwMjIyMTMxNzk5OSZ0cmFuc19pZD02NDYxOTAyMjIxMzE3OTIxNjI2=="
-  });
-});
+// Third party request endpoint
+appsAndMobileRoutes.post('/third_party_request', anmController.thirdPartyRequest);
 
 /* 
 
@@ -1557,42 +1810,38 @@ appsAndMobileRoutes.post('/third_party_request', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
-// default index endpoint
-appsAndMobileRoutes.post('/auto-debit/subscription', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    profile:{
-    "amount": "0.10",
-    "callback_url": "http://localhost/callback_response",
-    "cancel_date": "",
-    "completed": false,
-    "customer_number": "233595999364",
-    "cycle": "Daily",
-    "cycle_skip": "Y",
-    "end_date": "2023-07-29 10:30:00",
-    "nw": "MTN",
-    "resumable": "Y",
-    "service_id": "abcd",
-    "service_name": "Test service",
-    "start_date": "2023-07-28 09:00:00",
-    "status": "Suspended",
-    "subscription_date": "2023-07-24 04:51:50",
-    "uniq_ref_id": "8901234567891"
-      },
-    transactions: [
-    {
-             "prev_schedule": "",
-             "processing_id": "PR65565656",
-             "trans_date": "2023-07-24 04:51:50",
-             "trans_id": "226566565",
-             "trans_msg": "SUCCESS",
-             "trans_ref": "Auto Debit",
-             "trans_status": "Active"
-       }
-    ]
-  });
-});
+// Auto-debit subscription endpoint
+appsAndMobileRoutes.post('/auto-debit/subscription', anmController.autoDebitSubscription);
 
 /* 
 
@@ -1696,42 +1945,38 @@ appsAndMobileRoutes.post('/auto-debit/subscription', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
-// default index endpoint
-appsAndMobileRoutes.post('/auto-debit/otp-validation', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    profile:{
-    "amount": "0.10",
-    "callback_url": "http://localhost/callback_response",
-    "cancel_date": "",
-    "completed": false,
-    "customer_number": "233595999364",
-    "cycle": "Daily",
-    "cycle_skip": "Y",
-    "end_date": "2023-07-29 10:30:00",
-    "nw": "MTN",
-    "resumable": "Y",
-    "service_id": "abcd",
-    "service_name": "Test service",
-    "start_date": "2023-07-28 09:00:00",
-    "status": "Suspended",
-    "subscription_date": "2023-07-24 04:51:50",
-    "uniq_ref_id": "8901234567891"
-      },
-    transactions: [
-    {
-             "prev_schedule": "",
-             "processing_id": "PR65565656",
-             "trans_date": "2023-07-24 04:51:50",
-             "trans_id": "226566565",
-             "trans_msg": "SUCCESS",
-             "trans_ref": "Auto Debit",
-             "trans_status": "Active"
-       }
-    ]
-  });
-});
+// Auto-debit OTP validation endpoint
+appsAndMobileRoutes.post('/auto-debit/otp-validation', anmController.autoDebitOtpValidation);
 
 /* 
 
@@ -1835,42 +2080,38 @@ appsAndMobileRoutes.post('/auto-debit/otp-validation', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
-// default index endpoint
-appsAndMobileRoutes.post('/auto-debit/suspend', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    profile:{
-    "amount": "0.10",
-    "callback_url": "http://localhost/callback_response",
-    "cancel_date": "",
-    "completed": false,
-    "customer_number": "233595999364",
-    "cycle": "Daily",
-    "cycle_skip": "Y",
-    "end_date": "2023-07-29 10:30:00",
-    "nw": "MTN",
-    "resumable": "Y",
-    "service_id": "abcd",
-    "service_name": "Test service",
-    "start_date": "2023-07-28 09:00:00",
-    "status": "Suspended",
-    "subscription_date": "2023-07-24 04:51:50",
-    "uniq_ref_id": "8901234567891"
-      },
-    transactions: [
-    {
-             "prev_schedule": "",
-             "processing_id": "PR65565656",
-             "trans_date": "2023-07-24 04:51:50",
-             "trans_id": "226566565",
-             "trans_msg": "SUCCESS",
-             "trans_ref": "Auto Debit",
-             "trans_status": "Active"
-       }
-    ]
-  });
-});
+// Auto-debit suspend endpoint
+appsAndMobileRoutes.post('/auto-debit/suspend', anmController.autoDebitSuspend);
 
 /* 
 
@@ -1974,42 +2215,38 @@ appsAndMobileRoutes.post('/auto-debit/suspend', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
-// default index endpoint
-appsAndMobileRoutes.post('/auto-debit/resume', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    profile:{
-    "amount": "0.10",
-    "callback_url": "http://localhost/callback_response",
-    "cancel_date": "",
-    "completed": false,
-    "customer_number": "233595999364",
-    "cycle": "Daily",
-    "cycle_skip": "Y",
-    "end_date": "2023-07-29 10:30:00",
-    "nw": "MTN",
-    "resumable": "Y",
-    "service_id": "abcd",
-    "service_name": "Test service",
-    "start_date": "2023-07-28 09:00:00",
-    "status": "Suspended",
-    "subscription_date": "2023-07-24 04:51:50",
-    "uniq_ref_id": "8901234567891"
-      },
-    transactions: [
-    {
-             "prev_schedule": "",
-             "processing_id": "PR65565656",
-             "trans_date": "2023-07-24 04:51:50",
-             "trans_id": "226566565",
-             "trans_msg": "SUCCESS",
-             "trans_ref": "Auto Debit",
-             "trans_status": "Active"
-       }
-    ]
-  });
-});
+// Auto-debit resume endpoint
+appsAndMobileRoutes.post('/auto-debit/resume', anmController.autoDebitResume);
 
 /* 
 
@@ -2113,42 +2350,38 @@ appsAndMobileRoutes.post('/auto-debit/resume', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
 
-// default index endpoint
-appsAndMobileRoutes.post('/auto-debit/cancel', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    profile:{
-    "amount": "0.10",
-    "callback_url": "http://localhost/callback_response",
-    "cancel_date": "",
-    "completed": false,
-    "customer_number": "233595999364",
-    "cycle": "Daily",
-    "cycle_skip": "Y",
-    "end_date": "2023-07-29 10:30:00",
-    "nw": "MTN",
-    "resumable": "Y",
-    "service_id": "abcd",
-    "service_name": "Test service",
-    "start_date": "2023-07-28 09:00:00",
-    "status": "Suspended",
-    "subscription_date": "2023-07-24 04:51:50",
-    "uniq_ref_id": "8901234567891"
-      },
-    transactions: [
-    {
-             "prev_schedule": "",
-             "processing_id": "PR65565656",
-             "trans_date": "2023-07-24 04:51:50",
-             "trans_id": "226566565",
-             "trans_msg": "SUCCESS",
-             "trans_ref": "Auto Debit",
-             "trans_status": "Active"
-       }
-    ]
-  });
-});
+// Auto-debit cancel endpoint
+appsAndMobileRoutes.post('/auto-debit/cancel', anmController.autoDebitCancel);
 
 /* 
 
@@ -2239,16 +2472,37 @@ appsAndMobileRoutes.post('/auto-debit/cancel', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Invalid payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error."
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   example: null
  */
-// default index endpoint
-appsAndMobileRoutes.post('/callback-url', (req, res) => {
-  res.status(StatusCodes.OK).send( {
-    "trans_id": "98765432100",
-    "trans_ref": 4243846303,
-    "trans_status": "000/01",
-    "message": "SUCCESS"
-   });
-});
+// Callback URL endpoint
+appsAndMobileRoutes.post('/callback-url', anmController.callbackUrl);
 
 /* 
 
