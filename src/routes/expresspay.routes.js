@@ -1,6 +1,7 @@
 import express from 'express';
 import {StatusCodes, getReasonPhrase} from 'http-status-codes';
 import dotenv from 'dotenv';
+import * as expressPayController from '../controllers/expresspay.controller.js';
 dotenv.config();
 
 
@@ -22,10 +23,7 @@ const expressPayRoutes = express.Router();
  *               example: Hello, World!
  */
 // default index endpoint
-expressPayRoutes.get('/', (req, res) => {
-  res.status(StatusCodes.OK);
-  res.send('Hello, World!');
-});
+expressPayRoutes.get('/', expressPayController.getHealthCheck);
 
 
 /**
@@ -70,15 +68,7 @@ expressPayRoutes.get('/', (req, res) => {
  *                 message: Balance retrieved
  */
 
-expressPayRoutes.post('/settlement', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": 0,
-    "status-text": "Success",
-    "balance": 1234,
-    "reference-number": "RF43434",
-    "currency": "GHS"
-  });
-});
+expressPayRoutes.post('/settlement', expressPayController.checkSettlement);
 
 /**
  * @swagger
@@ -167,23 +157,7 @@ expressPayRoutes.post('/settlement', (req, res) => {
  *                 message: Transaction submitted
  */
 
-expressPayRoutes.post('/merchant/initiates', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": 1,
-    "order-id": "90bffe561179ed97",
-    "guest-checkout": "TRUE",
-    "merchantservice-title": "nn_ventures",
-    "merchantservice-srvrtid": "906962986353",
-    "message": "Success",
-    "token": "316152c48865d04e73.2568619f619f52c4d04ec2.177113153192653f52c4d0",
-    "redirect-url": "https://google.com",
-    "user-key": null,
-    "merchant-title": "NN VENTURES",
-    "merchant-mcc": "5411",
-    "merchant-city": "Accra",
-    "merchant-countrycode": "GH"
-  });
-});
+expressPayRoutes.post('/merchant/initiates', expressPayController.merchantInitiates);
 
 /**
  * @swagger
@@ -236,23 +210,7 @@ expressPayRoutes.post('/merchant/initiates', (req, res) => {
  *                 message: Transaction status retrieved
  */
 
-expressPayRoutes.post('/merchant/query', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": 1,
-    "order-id": "90bffe561179ed97",
-    "guest-checkout": "TRUE",
-    "merchantservice-title": "nn_ventures",
-    "merchantservice-srvrtid": "906962986353",
-    "message": "Success",
-    "token": "316152c48865d04e73.2568619f619f52c4d04ec2.177113153192653f52c4d0",
-    "redirect-url": "https://google.com",
-    "user-key": null,
-    "merchant-title": "NN VENTURES",
-    "merchant-mcc": "5411",
-    "merchant-city": "Accra",
-    "merchant-countrycode": "GH"
-  });
-});
+expressPayRoutes.post('/merchant/query', expressPayController.merchantQuery);
 
 /**
  * @swagger
@@ -304,13 +262,7 @@ expressPayRoutes.post('/merchant/query', (req, res) => {
  *                 message: Payment submitted successfully
  */
 
-expressPayRoutes.post('/merchant-direct/initiates', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": 1,
-    "order-id": "90bffe561179ed97",
-    "token": "787461ded46931a485.1096669161ded46931a5f8.35327262396661ded46931"
-  });
-});
+expressPayRoutes.post('/merchant-direct/initiates', expressPayController.merchantDirectInitiates);
 
 /**
  * @swagger
@@ -391,22 +343,7 @@ expressPayRoutes.post('/merchant-direct/initiates', (req, res) => {
  *                 message: Card processed
  */
 
-expressPayRoutes.post('/merchant-direct/card-payment', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "result": 3,
-    "result-text": "No transaction data available",
-    "order-id": "90bffe561179ed97",
-    "token": "974361defed73d3bc5.4966686961defed73d3c32.32994872485661defed73d",
-    "currency": "GHS",
-    "amount": "33.00",
-    "pmt-info": {
-      "bin": "233244",
-      "type": "card",
-      "name": "",
-      "country": ""
-    }
-  });
-});
+expressPayRoutes.post('/merchant-direct/card-payment', expressPayController.merchantDirectCardPayment);
 
 /**
  * @swagger
@@ -463,18 +400,7 @@ expressPayRoutes.post('/merchant-direct/card-payment', (req, res) => {
  *                 message: Mobile authorization submitted
  */
 
-expressPayRoutes.post('/merchant-direct/momo-payment', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "result": 1,
-    "result-text": "Approved",
-    "order-id": "49039ruuir",
-    "token": "316152c48865d04e73.2568619f619f52c4d04ec2.177113153192653f52c4d0",
-    "transaction-id": "906962986353",
-    "currency": "GHS",
-    "amount": 25,
-    "date-processed": "31st January, 1995"
-  });
-});
+expressPayRoutes.post('/merchant-direct/momo-payment', expressPayController.merchantDirectMomoPayment);
 
 
 /**
@@ -528,19 +454,7 @@ expressPayRoutes.post('/merchant-direct/momo-payment', (req, res) => {
  *                 message: Transaction status retrieved
  */
 
-expressPayRoutes.post('/merchant-direct/query', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "result": 1,
-    "result-text": "Success",
-    "order-id": "2c7bb737-fda8-4f4f-ae9d-b406f17ae48f",
-    "token": "231562067e19a53358.8433682562067e19a53485.04579040878362067e19a5",
-    "currency": "GHS",
-    "amount": "33.00",
-    "auth-code": "66978189xc01c",
-    "transaction-id": "50d63406udd14",
-    "date-processed": "2022-02-11 15:27:21"
-  });
-});
+expressPayRoutes.post('/merchant-direct/query', expressPayController.merchantDirectQuery);
 
 /**
  * @swagger
@@ -620,23 +534,7 @@ expressPayRoutes.post('/merchant-direct/query', (req, res) => {
  *                 message: Submitted successfully
  */
 
-expressPayRoutes.post('/tokenize/initiates', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": 1,
-    "order-id": "b57c01dd-8322-4b05-93fa-6ac4948d7fd4",
-    "guest-checkout": "TRUE",
-    "merchantservice-name": "nn_ventures",
-    "merchantservice-srvrtid": "906948373709",
-    "message": "Success",
-    "token": "996662068692c05931.4763323962068692c05981.12431661976162068692c0",
-    "redirect-url": "https://google.com",
-    "user-key": null,
-    "merchant-name": "NN VENTURES",
-    "merchant-mcc": "5411",
-    "merchant-city": "Accra",
-    "merchant-countrycode": "GH"
-  });
-});
+expressPayRoutes.post('/tokenize/initiates', expressPayController.tokenizeInitiates);
 
 /**
  * @swagger
@@ -672,19 +570,7 @@ expressPayRoutes.post('/tokenize/initiates', (req, res) => {
  *                 message: Payment submitted using token
  */
 
-expressPayRoutes.post('/tokenize/charge', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "result": 1,
-    "result-text": "Success",
-    "order-id": 12394,
-    "token": "316152c48865d04e73.2568619f619f52c4d04ec2.177113153192653f52c4d0",
-    "currency": "GHS",
-    "amount": 121,
-    "auth-code": "d6c40466x6add",
-    "transaction-id": "7b198d0euewre",
-    "date-processed": "12/8/2022"
-  });
-});
+expressPayRoutes.post('/tokenize/charge', expressPayController.tokenizeCharge);
 
 /**
  * @swagger
@@ -724,26 +610,7 @@ expressPayRoutes.post('/tokenize/charge', (req, res) => {
  *                 message: Transaction details retrieved
  */
 
-expressPayRoutes.post('/tokenize/query', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "result": 1,
-    "result-text": "Success",
-    "order-id": 12394,
-    "token": "316152c48865d04e73.2568619f619f52c4d04ec2.177113153192653f52c4d0",
-    "currency": "GHS",
-    "amount": 121,
-    "date-processed": "12/8/2022",
-    "auth-code": "dfcec8ecx5b9a",
-    "card": [
-      {
-        "cctoken": "316152c48865d04e73.2568619sf619f52c4d04ec2.177113153192653f52c4d0",
-        "ccnumber": "XXX XXX XXX",
-        "type": "visa",
-        "ccexp": 923
-      }
-    ]
-  });
-});
+expressPayRoutes.post('/tokenize/query', expressPayController.tokenizeQuery);
 
 /**
  * @swagger
@@ -816,13 +683,7 @@ expressPayRoutes.post('/tokenize/query', (req, res) => {
  *                 invoice_url: "https://example.com/invoice"
  */
 
-expressPayRoutes.post('/invoice/dynamic-invoice', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": 1,
-    "message": "Dynamic invoice successfully created",
-    "url": "http://sandbox.expresspaygh.com/inv/340"
-  });
-});
+expressPayRoutes.post('/invoice/dynamic-invoice', expressPayController.invoiceDynamic);
 
 /**
  * @swagger
@@ -862,26 +723,7 @@ expressPayRoutes.post('/invoice/dynamic-invoice', (req, res) => {
  *                 message: Query completed
  */
 
-expressPayRoutes.post('/invoice/token-query', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "result": 1,
-    "result-text": "Success",
-    "order-id": "inv.5262621e2df549a018.75350242621e2",
-    "token": "5223621e2df54e4861.14091822621e2df54e48c1.522507882020621e2df54e",
-    "currency": "GHS",
-    "amount": "2000.00",
-    "dynamic-invoice-id": "356",
-    "first-name": "James",
-    "last-name": "Bond",
-    "email": "bond@mi6.co.uk",
-    "phone-number": "0240000059",
-    "account-number": "1234567890",
-    "payer-reference": "007",
-    "auth-code": "8cfsdsdxe2d2",
-    "transaction-id": "2fac9af4uecc0",
-    "date-processed": "2022-03-01 14:28:59"
-  });
-});
+expressPayRoutes.post('/invoice/token-query', expressPayController.invoiceTokenQuery);
 
 
 
@@ -923,26 +765,7 @@ expressPayRoutes.post('/invoice/token-query', (req, res) => {
  *                 services: []
  */
 
-expressPayRoutes.post('/billpay/services', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": 0,
-    "status-text": "Success",
-    "services": [
-      {
-        "service": "AIRTELTIGO_GH",
-        "name": "AirtelTigo Prepaid Topup",
-        "category": "AIRTIME-TOPUP",
-        "query": "FALSE"
-      },
-      {
-        "service": "VODA_GH",
-        "name": "Vodafone Prepaid Topup",
-        "category": "AIRTIME-TOPUP",
-        "query": "FALSE"
-      }
-    ]
-  });
-});
+expressPayRoutes.post('/billpay/services', expressPayController.billpayServices);
 
 /**
  * @swagger
@@ -994,23 +817,7 @@ expressPayRoutes.post('/billpay/services', (req, res) => {
  *                 message: Query results returned
  */
 
-expressPayRoutes.post('/billpay/query', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": 0,
-    "status-text": "Success",
-    "reference-number": 12394,
-    "account-info": "316152c48865d04e73.2568619f619f52c4d04ec2.177113153192653f52c4d0",
-    "options": [
-      {
-        "title": "1.5GB Data Package",
-        "package": "HUGE Dealz",
-        "amount": 20,
-        "currency": "GHS",
-        "due-date": "10/09/2021"
-      }
-    ]
-  });
-});
+expressPayRoutes.post('/billpay/query', expressPayController.billpayQuery);
 
 /**
  * @swagger
@@ -1078,18 +885,7 @@ expressPayRoutes.post('/billpay/query', (req, res) => {
  *                 message: Payment processed
  */
 
-expressPayRoutes.post('/billpay/pay', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": 0,
-    "status-text": "Success",
-    "reference-number": "99526338-1009-40fc-a2d7-3090d308f756",
-    "balance": "4354.64",
-    "currency": "GHS",
-    "transaction-id": "8ff5c326u6cba",
-    "receipt-number": "",
-    "timestamp": "20220112102130"
-  });
-});
+expressPayRoutes.post('/billpay/pay', expressPayController.billpayPay);
 
 /**
  * @swagger
@@ -1136,15 +932,7 @@ expressPayRoutes.post('/billpay/pay', (req, res) => {
  *                 status: success
  *                 message: Transaction status retrieved
  */
-expressPayRoutes.post('/billpay/status', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": 0,
-    "status-text": "Success",
-    "reference-number": "bcc6a38a-8328-418b-9317-2c28e2ec2ab0",
-    "transaction-id": "ea073e87u43ff",
-    "timestamp": "2022-01-11 10:46:28"
-  });
-});
+expressPayRoutes.post('/billpay/status', expressPayController.billpayStatus);
 
 
 

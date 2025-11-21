@@ -6,17 +6,19 @@ import dotenv from 'dotenv';
 dotenv.config({ path: `${process.cwd()}/.env` });
 
 
-//import routes
-import appRoutes from './routes/app.routes';
-import authRoutes from './routes/auth.routes';
-import userRoutes from './routes/user.routes';
-import productRoutes from './routes/product.routes';
 
-// Sand box routes
-import naloRoutes from './routes/nalo.routes';
-import wigalRoutes from './routes/wigal.routes';
-import anmRoutes from './routes/anm.routes';
-import expressPayRoutes from './routes/expresspay.routes';
+import { 
+  //import routes
+  appRoutes, 
+  authRoutes,
+  userRoutes,
+  productRoutes,
+  // Sand box routes
+  naloRoutes,
+  wigalRoutes,
+  anmRoutes,
+  expressPayRoutes
+} from './routes';
 
 import AppError from './utils/appError';
 import catchAsync from './utils/catchAsync';
