@@ -1,8 +1,8 @@
 import express from 'express';
-import {StatusCodes, getReasonPhrase} from 'http-status-codes';
 import dotenv from 'dotenv';
-dotenv.config();
+import * as naloController from '../controllers/nalo.controller.js';
 
+dotenv.config();
 
 const naloRoutes = express.Router();
 
@@ -22,10 +22,7 @@ const naloRoutes = express.Router();
  *               example: Hello, World!
  */
 // default index endpoint
-naloRoutes.get('/', (req, res) => {
-  res.status(StatusCodes.OK);
-  res.send('Hello, World!');
-});
+naloRoutes.get('/', naloController.getIndex);
 
 
 /**
@@ -65,15 +62,7 @@ naloRoutes.get('/', (req, res) => {
  *                 message: Transaction status retrieved
  */
 
-naloRoutes.post('/clientapi/generate-payment-token', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "success": true,
-    "code": "TOKEN-CRTD-0050",
-    "data": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjaGFudF9pZCI6Im1ucUREaGlTc3I2WThEUHk4RDJYb0QiLCJiYXNpY19hdXRoX2hlYWRlciI6IkJhc2ljIGFjMWMzYWQxNWUxZGNhNzVjOWFlZmY2YzQ3MWNmMjc3MjQwOWRjYzE5NTRlODFiZjIwM2YzYjAzNjk3NDNjNzYwZmE1ODk5N2NmNDBmODI1ZDc1YWNmYzJhMzJlZDlkYzYzNGE4YWRlN2NhOTBlZTU2ZDdiY2IwZGY1MjZiMjViIiwiaWF0IjoxNzU1NTE4NjIyLCJleHAiOjE3NTU1MTk1MjJ9.TCn6Nlpg0LjxbiExmaHG2egkGqsWyz-dc2id8amv-Cg"
-    }
-  });
-});
+naloRoutes.post('/clientapi/generate-payment-token', naloController.generateClientApiPaymentToken);
 
 
 /**
@@ -150,19 +139,7 @@ naloRoutes.post('/clientapi/generate-payment-token', (req, res) => {
  */
 
 
-naloRoutes.post('/clientapi/collection', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "success": true,
-    "code": "PAY-CRTD-0055",
-    "data": {
-      "order_id": "FPewDB25nodznJawcNykhx",
-      "status": "PENDING",
-      "amount": 0.11,
-      "timestamp": "2025-08-18 12:41:23",
-      "otp_code": "None*252#"
-    }
-  });
-});
+naloRoutes.post('/clientapi/collection', naloController.initiateClientApiCollection);
 
 
 /**
@@ -199,16 +176,7 @@ naloRoutes.post('/clientapi/collection', (req, res) => {
  *                 message: Collection status retrieved
  */
 
-naloRoutes.post('/clientapi/collection-status/', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "success": true,
-    "code": "PAY-STAT-0080",
-    "data": {
-      "status": "PENDING",
-      "amount": 0.11
-    }
-  });
-});
+naloRoutes.post('/clientapi/collection-status/', naloController.checkClientApiCollectionStatus);
 
 
 /**
@@ -248,15 +216,7 @@ naloRoutes.post('/clientapi/collection-status/', (req, res) => {
  *                 message: Transaction status retrieved
  */
 
-naloRoutes.post('/hosted-checkout/generate-payment-token', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "success": true,
-    "code": "TOKEN-CRTD-0050",
-    "data": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjaGFudF9pZCI6Im1ucUREaGlTc3I2WThEUHk4RDJYb0QiLCJiYXNpY19hdXRoX2hlYWRlciI6IkJhc2ljIGFjMWMzYWQxNWUxZGNhNzVjOWFlZmY2YzQ3MWNmMjc3MjQwOWRjYzE5NTRlODFiZjIwM2YzYjAzNjk3NDNjNzYwZmE1ODk5N2NmNDBmODI1ZDc1YWNmYzJhMzJlZDlkYzYzNGE4YWRlN2NhOTBlZTU2ZDdiY2IwZGY1MjZiMjViIiwiaWF0IjoxNzU1NTE4NjIyLCJleHAiOjE3NTU1MTk1MjJ9.TCn6Nlpg0LjxbiExmaHG2egkGqsWyz-dc2id8amv-Cg"
-    }
-  });
-});
+naloRoutes.post('/hosted-checkout/generate-payment-token', naloController.generateHostedCheckoutPaymentToken);
 
 /**
  * @swagger
@@ -356,16 +316,7 @@ naloRoutes.post('/hosted-checkout/generate-payment-token', (req, res) => {
  *                 message: Merchant transaction submitted
  */
 
-naloRoutes.post('/hosted-checkout/checkout/session', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "success": true,
-    "code": "CHECKOUT-CRTD-0071",
-    "data": {
-      "checkout_url": "None?id=84887d1d-b783-49ea-a528-13332e274667",
-      "checkout_timeout": 1800
-    }
-  });
-});
+naloRoutes.post('/hosted-checkout/checkout/session', naloController.createHostedCheckoutSession);
 
 
 /**
@@ -402,16 +353,7 @@ naloRoutes.post('/hosted-checkout/checkout/session', (req, res) => {
  *                 message: Collection status retrieved
  */
 
-naloRoutes.post('/hosted-checkout/collection-status/', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "success": true,
-    "code": "PAY-STAT-0080",
-    "data": {
-      "status": "PENDING",
-      "amount": 0.11
-    }
-  });
-});
+naloRoutes.post('/hosted-checkout/collection-status/', naloController.checkHostedCheckoutCollectionStatus);
 
 
 
