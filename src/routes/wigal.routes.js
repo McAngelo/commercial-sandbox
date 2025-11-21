@@ -1,8 +1,9 @@
 import express from 'express';
 import {StatusCodes, getReasonPhrase} from 'http-status-codes';
 import dotenv from 'dotenv';
-dotenv.config();
+import wigalController from '../controllers/wigal.controller';
 
+dotenv.config();
 
 const wigalRoutes = express.Router();
 
@@ -20,12 +21,74 @@ const wigalRoutes = express.Router();
  *             schema:
  *               type: string
  *               example: Hello, World!
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Bad request"
+ *       401:
+ *         description: Unauthorized - Authentication failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "UNAUTHORIZED"
+ *                 message:
+ *                   type: string
+ *                   example: "Authentication failed"
+ *       403:
+ *         description: Forbidden - Access denied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "FORBIDDEN"
+ *                 message:
+ *                   type: string
+ *                   example: "You do not have permission to access this resource"
+ *       404:
+ *         description: Not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "NOT_FOUND"
+ *                 message:
+ *                   type: string
+ *                   example: "Resource not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
  */
 // default index endpoint
-wigalRoutes.get('/', (req, res) => {
-  res.status(StatusCodes.OK);
-  res.send('Hello, World!');
-});
+wigalRoutes.get('/', wigalController.getHealthCheck);
 
 /**
  * @swagger
@@ -66,19 +129,72 @@ wigalRoutes.get('/', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Invalid payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "INVALID_REQUEST"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid request parameters"
+ *       401:
+ *         description: Unauthorized - Authentication failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "UNAUTHORIZED"
+ *                 message:
+ *                   type: string
+ *                   example: "Authentication failed"
+ *       403:
+ *         description: Forbidden - Access denied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "FORBIDDEN"
+ *                 message:
+ *                   type: string
+ *                   example: "You do not have permission to access this resource"
+ *       404:
+ *         description: Not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "NOT_FOUND"
+ *                 message:
+ *                   type: string
+ *                   example: "Resource not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
  */
 // default index endpoint
-wigalRoutes.post('/callback-url', (req, res) => {
-  res.status(StatusCodes.OK).send( {
-    "msgid": "MGS1010101",
-    "status": "DELIVRD",
-    "reason": "DELIVRD",
-    "destination": "233276128036",
-    "statusdate": "2024-04-23T14:59:14.143+00:00",
-    "handlecharge": 4,
-    "topupcharge": 0
-  });
-});
+wigalRoutes.post('/callback-url', wigalController.addCallbackUrl);
 
 /**
  * @swagger
@@ -120,83 +236,73 @@ wigalRoutes.post('/callback-url', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "INVALID_REQUEST"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing or invalid headers"
+ *       401:
+ *         description: Unauthorized - Invalid API key or username
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "UNAUTHORIZED"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid API key or username"
+ *       403:
+ *         description: Forbidden - Access denied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "FORBIDDEN"
+ *                 message:
+ *                   type: string
+ *                   example: "You do not have permission to access this resource"
+ *       404:
+ *         description: Not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "NOT_FOUND"
+ *                 message:
+ *                   type: string
+ *                   example: "Balance information not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
  */
 
 // default index endpoint
-wigalRoutes.get('/balance', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": "SUCCESS",
-    "message": "SUCCESS",
-    "data": {
-        "paidcashbalance": 0,
-        "cashbalance": 677.56,
-        "bundles": {
-            "VOICE": 15,
-            "KYCVERIFY": 12,
-            "SIMACTIVE": 123,
-            "SMS": 82,
-            "USSD": 100
-        },
-        "invoicesummary": [
-            {
-                "invoicetype": "TOPUP",
-                "count": 2,
-                "totalamount": 2
-            },
-            {
-                "invoicetype": "BUNDLE",
-                "count": 2,
-                "totalamount": 11
-            },
-            {
-                "invoicetype": "CREDIT_NOTE",
-                "count": 6,
-                "totalamount": 126
-            },
-            {
-                "invoicetype": "IOU",
-                "count": 1,
-                "totalamount": 1000
-            }
-        ],
-        "activebundleinvoices": [
-            {
-                "id": 387,
-                "description": "Mashup Bundle dash",
-                "enddate": "2024-08-30",
-                "invoicetype": "BUNDLE",
-                "details": [
-                    {
-                        "service": "KYCVERIFY",
-                        "quantity": 12,
-                        "used": 0
-                    },
-                    {
-                        "service": "VOICE",
-                        "quantity": 15,
-                        "used": 0
-                    },
-                    {
-                        "service": "SIMACTIVE",
-                        "quantity": 123,
-                        "used": 0
-                    },
-                    {
-                        "service": "USSD",
-                        "quantity": 100,
-                        "used": 0
-                    },
-                    {
-                        "service": "SMS",
-                        "quantity": 100,
-                        "used": 18
-                    }
-                ]
-            }
-        ]
-    }
-});
-});
+wigalRoutes.get('/balance', wigalController.getBalance);
 
 
 /**
@@ -263,20 +369,79 @@ wigalRoutes.get('/balance', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "INVALID_REQUEST"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid request parameters"
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   example: ["Sender ID is required", "Message length exceeds maximum limit", "Invalid destination number format"]
+ *       401:
+ *         description: Unauthorized - Authentication failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "UNAUTHORIZED"
+ *                 message:
+ *                   type: string
+ *                   example: "Authentication failed"
+ *       403:
+ *         description: Forbidden - Access denied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "FORBIDDEN"
+ *                 message:
+ *                   type: string
+ *                   example: "You do not have permission to access this resource"
+ *       404:
+ *         description: Sender ID not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "SENDER_ID_NOT_FOUND"
+ *                 message:
+ *                   type: string
+ *                   example: "Sender ID not found or not approved"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
  */
 
 
 // default index endpoint
-wigalRoutes.post('/sms/send-general', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": "ACCEPTD",
-    "message": "Message Accepted For Processing",
-    "messageId": "MSG123456789",
-    "timestamp": "2024-02-05T12:34:56Z",
-    "creditUsed": 1,
-    "remainingCredits": 9999
-  });
-});
+wigalRoutes.post('/sms/send-general', wigalController.sendGeneralSms);
 
 /* 
   400 responses
@@ -376,16 +541,82 @@ wigalRoutes.post('/sms/send-general', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "INVALID_REQUEST"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid request parameters"
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   example: ["Sender ID is required", "Message length exceeds maximum limit", "Invalid destination number format"]
+ *       401:
+ *         description: Unauthorized - Invalid API credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "UNAUTHORIZED"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid API credentials"
+ *       403:
+ *         description: Forbidden - Access denied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "FORBIDDEN"
+ *                 message:
+ *                   type: string
+ *                   example: "You do not have permission to access this resource"
+ *       404:
+ *         description: Sender ID not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "SENDER_ID_NOT_FOUND"
+ *                 message:
+ *                   type: string
+ *                   example: "Sender ID is not valid"
+ *                 data:
+ *                   type: null
+ *                   example: null
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
  */
 
 
 // default index endpoint
-wigalRoutes.post('/sms/send-personalized', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": "ACCEPTD",
-    "message": "Message Accepted For Processing"
-  });
-});
+wigalRoutes.post('/sms/send-personalized', wigalController.sendPersonalizedSms);
 
 /* 
   400 responses
@@ -486,85 +717,84 @@ wigalRoutes.post('/sms/send-personalized', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "INVALID_REQUEST"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid request parameters"
+ *       401:
+ *         description: Unauthorized - Invalid API key or username
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "UNAUTHORIZED"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid API key or username"
+ *                 data:
+ *                   type: null
+ *                   example: null
+ *       403:
+ *         description: Forbidden - Access denied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "FORBIDDEN"
+ *                 message:
+ *                   type: string
+ *                   example: "You do not have permission to access this resource"
+ *       404:
+ *         description: No history records found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "FAILED"
+ *                 message:
+ *                   type: string
+ *                   example: "No history records found"
+ *                 data:
+ *                   type: null
+ *                   example: null
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
+ *                 data:
+ *                   type: null
+ *                   example: null
  */
 
                     
 
 // default index endpoint
-wigalRoutes.post('/sms/history', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": "SUCCESS",
-    "message": "Success",
-    "data": {
-      "content": [
-        {
-          "apimessageid": "MGS1010101",
-          "status": "DELIVRD",
-          "statusreason": "DELIVRD",
-          "recipient": "233542709210",
-          "statusdate": "2024-06-26T13:06:14.087856",
-          "bundlecredits": 0,
-          "charge": 0.03,
-          "service": "SMS",
-          "servicetype": "TEXT",
-          "messagecount": 1,
-          "charactercount": 53
-        },
-        {
-          "apimessageid": "MGS1010101",
-          "status": "DELIVRD",
-          "statusreason": "DELIVRD",
-          "recipient": "233542409410",
-          "statusdate": "2024-06-26T13:12:55.771246",
-          "bundlecredits": 0,
-          "charge": 0.03,
-          "service": "SMS",
-          "servicetype": "TEXT",
-          "messagecount": 1,
-          "charactercount": 55
-        },
-        {
-          "apimessageid": "MGS1010101",
-          "status": "DELIVRD",
-          "statusreason": "DELIVRD",
-          "recipient": "233542909410",
-          "statusdate": "2024-06-26T13:14:23.801293",
-          "bundlecredits": 0,
-          "charge": 0.03,
-          "service": "SMS",
-          "servicetype": "TEXT",
-          "messagecount": 1,
-          "charactercount": 46
-        }
-      ],
-      "pageable": {
-        "pageNumber": 0,
-        "pageSize": 50,
-        "sort": {
-          "sorted": false,
-          "empty": true,
-          "unsorted": true
-        },
-        "offset": 0,
-        "unpaged": false,
-        "paged": true
-      },
-      "last": true,
-      "totalElements": 3,
-      "totalPages": 1,
-      "size": 50,
-      "number": 0,
-      "sort": {
-        "sorted": false,
-        "empty": true,
-        "unsorted": true
-      },
-      "first": true,
-      "numberOfElements": 3,
-      "empty": false
-    }
-  });
-});
+wigalRoutes.post('/sms/history', wigalController.getSmsHistory);
 
 /* 
 
@@ -655,17 +885,81 @@ wigalRoutes.post('/sms/history', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Message template must contain %OTPCODE% placeholder"
+ *       401:
+ *         description: Unauthorized - Invalid API key or username
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "UNAUTHORIZED"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid API key or username"
+ *                 data:
+ *                   type: null
+ *                   example: null
+ *       403:
+ *         description: Forbidden - Access denied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "FORBIDDEN"
+ *                 message:
+ *                   type: string
+ *                   example: "You do not have permission to access this resource"
+ *       404:
+ *         description: Invalid phone number format
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid phone number format"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
+ *                 data:
+ *                   type: null
+ *                   example: null
  */
 
                     
 
 // default index endpoint
-wigalRoutes.post('/sms/otp/generate', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": "SUCCESS",
-    "message": "OTP processed for delivery"
-  });
-});
+wigalRoutes.post('/sms/otp/generate', wigalController.generateOtp);
 
 /* 
 
@@ -755,17 +1049,81 @@ wigalRoutes.post('/sms/otp/generate', (req, res) => {
  *                   example: "success"
  *       400:
  *         description: Missing or invalid headers or payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *       401:
+ *         description: Unauthorized - Invalid API key or username
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "UNAUTHORIZED"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid API key or username"
+ *                 data:
+ *                   type: null
+ *                   example: null
+ *       403:
+ *         description: Forbidden - Access denied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "FORBIDDEN"
+ *                 message:
+ *                   type: string
+ *                   example: "You do not have permission to access this resource"
+ *       404:
+ *         description: Invalid OTP code
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid OTP code"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
+ *                 data:
+ *                   type: null
+ *                   example: null
  */
 
                     
 
 // default index endpoint
-wigalRoutes.post('/sms/otp/verify', (req, res) => {
-  res.status(StatusCodes.OK).send({
-    "status": "SUCCESS",
-    "message": "OTP verified successfully"
-  });
-});
+wigalRoutes.post('/sms/otp/verify', wigalController.verifyOtp);
 
 /* 
 
