@@ -1,10 +1,10 @@
-import projectService from '../services/product.service';
+import businessService from '../services/business.service';
 import catchAsync from '../utils/catchAsync';
 
-const createProject = catchAsync(async (req, res, next) => {
+const createBusiness = catchAsync(async (req, res, next) => {
     const { body, user } = req;
     
-    const projectData = {
+    const businessData = {
         title: body.title,
         productImage: body.productImage,
         price: body.price,
@@ -15,33 +15,33 @@ const createProject = catchAsync(async (req, res, next) => {
         tags: body.tags,
     };
 
-    const newProject = await projectService.createProject(projectData, user.id);
+    const newBusiness = await businessService.createBusiness(businessData, user.id);
 
     return res.status(201).json({
         status: 'success',
-        data: newProject,
+        data: newBusiness,
     });
 });
 
-const getAllProject = catchAsync(async (req, res, next) => {
-    const projects = await projectService.getAllProjectsByUser(req.user.id);
+const getAllBusiness = catchAsync(async (req, res, next) => {
+    const businesss = await businessService.getAllBusinesssByUser(req.user.id);
 
     return res.json({
         status: 'success',
-        data: projects,
+        data: businesss,
     });
 });
 
-const getProjectById = catchAsync(async (req, res, next) => {
-    const project = await projectService.getProjectById(req.params.id);
+const getBusinessById = catchAsync(async (req, res, next) => {
+    const business = await businessService.getBusinessById(req.params.id);
 
     return res.json({
         status: 'success',
-        data: project,
+        data: business,
     });
 });
 
-const updateProject = catchAsync(async (req, res, next) => {
+const updateBusiness = catchAsync(async (req, res, next) => {
     const { body, user, params } = req;
     
     const updateData = {
@@ -55,7 +55,7 @@ const updateProject = catchAsync(async (req, res, next) => {
         tags: body.tags,
     };
 
-    const updatedProject = await projectService.updateProject(
+    const updatedBusiness = await businessService.updateBusiness(
         params.id,
         user.id,
         updateData
@@ -63,12 +63,12 @@ const updateProject = catchAsync(async (req, res, next) => {
 
     return res.json({
         status: 'success',
-        data: updatedProject,
+        data: updatedBusiness,
     });
 });
 
-const deleteProject = catchAsync(async (req, res, next) => {
-    const result = await projectService.deleteProject(
+const deleteBusiness = catchAsync(async (req, res, next) => {
+    const result = await businessService.deleteBusiness(
         req.params.id,
         req.user.id
     );
@@ -80,9 +80,9 @@ const deleteProject = catchAsync(async (req, res, next) => {
 });
 
 export default {
-    createProject,
-    getAllProject,
-    getProjectById,
-    updateProject,
-    deleteProject,
+    createBusiness,
+    getAllBusiness,
+    getBusinessById,
+    updateBusiness,
+    deleteBusiness,
 };

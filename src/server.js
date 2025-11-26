@@ -12,12 +12,17 @@ import {
   appRoutes, 
   authRoutes,
   userRoutes,
-  productRoutes,
+  businessRoutes,
   // Sand box routes
   naloRoutes,
   wigalRoutes,
   anmRoutes,
-  expressPayRoutes
+  expressPayRoutes,
+  arkeselRoutes,
+  flutterwaveRoutes,
+  korapayRoutes,
+  mnotifyRoutes,
+  paystackRoutes
 } from './routes';
 
 import AppError from './utils/appError';
@@ -52,7 +57,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
 app.use('/api/v1', appRoutes);
 
 // products routes
-app.use('/api/v1/product', productRoutes);
+app.use('/api/v1/business', businessRoutes);
 
 // user routes
 app.use('/api/v1/user', userRoutes);
@@ -71,6 +76,21 @@ app.use('/api/v1/anm', anmRoutes);
 
 // Express Pay Sandbox routes
 app.use('/api/v1/express-pay', expressPayRoutes);
+
+// Arkesel Sandbox routes
+app.use('/api/v1/arkesel', arkeselRoutes);
+
+// Flutterwave Sandbox routes
+app.use('/api/v1/flutterwave', flutterwaveRoutes);
+
+// Korapay Sandbox routes
+app.use('/api/v1/korapay', korapayRoutes);
+
+// MNotify Sandbox routes
+app.use('/api/v1/mnotify', mnotifyRoutes);
+
+// Paystack Sandbox routes
+app.use('/api/v1/paystack', paystackRoutes);
 
 
 app.all(/.*/, catchAsync(async (req, res, next) => {

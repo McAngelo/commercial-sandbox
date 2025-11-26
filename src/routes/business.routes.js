@@ -1,17 +1,17 @@
 
 import express from 'express';
 import authController from '../controllers/auth.controller';
-import productController from '../controllers/product.controller';
+import businessController from '../controllers/business.controller';
 
-const productRoutes = express.Router();
+const businessRoutes = express.Router();
 
 
 /**
  * @swagger
- * /api/v1/product:
+ * /api/v1/business:
  *   post:
- *     summary: Create a new product
- *     tags: [2. Business Settings]
+ *     summary: Create a new business
+ *     tags: [2. Business]
  *     requestBody:
  *       required: true
  *       content:
@@ -43,7 +43,7 @@ const productRoutes = express.Router();
  *               productUrl:
  *                 type: string
  *                 format: url
- *                 example: "https://example.com/product/nike-sneakers"
+ *                 example: "https://example.com/business/nike-sneakers"
  *               category:
  *                 type: array
  *                 items:
@@ -59,7 +59,7 @@ const productRoutes = express.Router();
  *                 example: 1
  *     responses:
  *       201:
- *         description: Product created successfully
+ *         description: business created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -67,7 +67,7 @@ const productRoutes = express.Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Product created successfully"
+ *                   example: "business created successfully"
  *                 data:
  *                   type: object
  *                 status:
@@ -77,14 +77,14 @@ const productRoutes = express.Router();
  *         description: Invalid data
  */
 
-productRoutes.post('/', authController.authentication, authController.restrictTo('0'), productController.createProject);
+businessRoutes.post('/', authController.authentication, authController.restrictTo('0'), businessController.createBusiness);
 
 /**
  * @swagger
- * /api/v1/product:
+ * /api/v1/business:
  *   get:
  *     summary: Add a new user
- *     tags: [2. Business Settings]
+ *     tags: [2. Business]
  *     responses:
  *       200:
  *         description: User created successfully
@@ -104,14 +104,14 @@ productRoutes.post('/', authController.authentication, authController.restrictTo
  *       400:
  *         description: Invalid data
  */
-productRoutes.get('/', authController.authentication, authController.restrictTo('0'), productController.getAllProject);
+businessRoutes.get('/', authController.authentication, authController.restrictTo('0'), businessController.getAllBusiness);
 
 /**
  * @swagger
- * /api/v1/product/{id}:
+ * /api/v1/business/{id}:
  *   post:
  *     summary: Add a new user
- *     tags: [2. Business Settings]
+ *     tags: [2. Business]
  *     requestBody:
  *       required: true
  *       content:
@@ -142,14 +142,14 @@ productRoutes.get('/', authController.authentication, authController.restrictTo(
  *       400:
  *         description: Invalid data
  */
-productRoutes.get('/:id', authController.authentication, authController.restrictTo('0'), productController.getProjectById);
+businessRoutes.get('/:id', authController.authentication, authController.restrictTo('0'), businessController.getBusinessById);
 
 /**
  * @swagger
- * /api/v1/product/{id}:
+ * /api/v1/business/{id}:
  *   patch:
  *     summary: Add a new user
- *     tags: [2. Business Settings]
+ *     tags: [2. Business]
  *     requestBody:
  *       required: true
  *       content:
@@ -180,14 +180,14 @@ productRoutes.get('/:id', authController.authentication, authController.restrict
  *       400:
  *         description: Invalid data
  */
-productRoutes.patch('/:id', authController.authentication, authController.restrictTo('0'), productController.updateProject);
+businessRoutes.patch('/:id', authController.authentication, authController.restrictTo('0'), businessController.updateBusiness);
 
 /**
  * @swagger
- * /api/v1/product/{id}:
+ * /api/v1/business/{id}:
  *   delete:
  *     summary: Add a new user
- *     tags: [2. Business Settings]
+ *     tags: [2. Business]
  *     responses:
  *       200:
  *         description: User created successfully
@@ -207,6 +207,6 @@ productRoutes.patch('/:id', authController.authentication, authController.restri
  *       400:
  *         description: Invalid data
  */
-productRoutes.delete('/:id', authController.authentication, authController.restrictTo('0'), productController.deleteProject);
+businessRoutes.delete('/:id', authController.authentication, authController.restrictTo('0'), businessController.deleteBusiness);
 
-export default productRoutes;
+export default businessRoutes;
