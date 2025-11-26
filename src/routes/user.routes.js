@@ -10,7 +10,7 @@ const userRoutes = express.Router();
  * /api/v1/user:
  *   get:
  *     summary: Get all users
- *     tags: [General]
+ *     tags: [2. Business Settings]
  * 
  *     responses:
  *       200:

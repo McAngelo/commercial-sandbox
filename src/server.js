@@ -41,7 +41,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+  swaggerOptions: {
+    tagsSorter: "alpha",          // or "reverse-alpha"
+    operationsSorter: "alpha",    // or method, or custom
+  }
+}));
 
 // all default routes
 app.use('/api/v1', appRoutes);

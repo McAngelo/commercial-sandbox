@@ -11,7 +11,7 @@ const productRoutes = express.Router();
  * /api/v1/product:
  *   post:
  *     summary: Create a new product
- *     tags: [General]
+ *     tags: [2. Business Settings]
  *     requestBody:
  *       required: true
  *       content:
@@ -84,7 +84,7 @@ productRoutes.post('/', authController.authentication, authController.restrictTo
  * /api/v1/product:
  *   get:
  *     summary: Add a new user
- *     tags: [General]
+ *     tags: [2. Business Settings]
  *     responses:
  *       200:
  *         description: User created successfully
@@ -111,7 +111,7 @@ productRoutes.get('/', authController.authentication, authController.restrictTo(
  * /api/v1/product/{id}:
  *   post:
  *     summary: Add a new user
- *     tags: [General]
+ *     tags: [2. Business Settings]
  *     requestBody:
  *       required: true
  *       content:
@@ -149,7 +149,7 @@ productRoutes.get('/:id', authController.authentication, authController.restrict
  * /api/v1/product/{id}:
  *   patch:
  *     summary: Add a new user
- *     tags: [General]
+ *     tags: [2. Business Settings]
  *     requestBody:
  *       required: true
  *       content:
@@ -187,7 +187,7 @@ productRoutes.patch('/:id', authController.authentication, authController.restri
  * /api/v1/product/{id}:
  *   delete:
  *     summary: Add a new user
- *     tags: [General]
+ *     tags: [2. Business Settings]
  *     responses:
  *       200:
  *         description: User created successfully
