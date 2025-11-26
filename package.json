@@ -1,5 +1,5 @@
 {
-  "name": "api-simple",
+  "name": "commercial-sandbox-backend",
   "version": "1.0.0",
   "description": "This is a learning platform",
   "main": "src/server.js",

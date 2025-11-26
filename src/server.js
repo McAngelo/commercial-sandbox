@@ -25,7 +25,8 @@ import catchAsync from './utils/catchAsync';
 import globalErrorHandler from './controllers/error.controller';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+console.log('Environment:', process.env.APP_PORT);
+const PORT = process.env.APP_PORT || 3000;
 
 app.use(express.json());
 
