@@ -2,7 +2,7 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.APP_PORT || 3000;
 
 const options = {
   definition: {

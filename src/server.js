@@ -25,7 +25,8 @@ import catchAsync from './utils/catchAsync';
 import globalErrorHandler from './controllers/error.controller';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+console.log('Environment:', process.env.APP_PORT);
+const PORT = process.env.APP_PORT || 3000;
 
 app.use(express.json());
 
@@ -40,7 +41,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+  swaggerOptions: {
+    tagsSorter: "alpha",          // or "reverse-alpha"
+    operationsSorter: "alpha",    // or method, or custom
+  }
+}));
 
 // all default routes
 app.use('/api/v1', appRoutes);

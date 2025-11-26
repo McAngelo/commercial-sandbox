@@ -8,7 +8,7 @@ const authRoutes = express.Router();
  * /api/v1/auth/signup:
  *   post:
  *     summary: Register a new user
- *     tags: [Authentication]
+ *     tags: [1. Authentication]
  *     requestBody:
  *       required: true
  *       content:
@@ -62,7 +62,7 @@ authRoutes.post('/signup', authController.signup);
  * /api/v1/auth/login:
  *   post:
  *     summary: Login user
- *     tags: [Authentication]
+ *     tags: [1. Authentication]
  *     requestBody:
  *       required: true
  *       content:

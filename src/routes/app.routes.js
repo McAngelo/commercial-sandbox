@@ -16,7 +16,7 @@ const appRoutes = express.Router();
  * /api/v1:
  *   get:
  *     summary: Returns a sample message
- *     tags: [General]
+ *     tags: [2. Business Settings]
  *     responses:
  *       200:
  *         description: A successful response
@@ -37,7 +37,7 @@ appRoutes.get('/', (req, res) => {
  * /api/v1/users:
  *   get:
  *     summary: Get all users
- *     tags: [General]
+ *     tags: [2. Business Settings]
  *     responses:
  *       200:
  *         description: List of users
@@ -63,7 +63,7 @@ appRoutes.get('/users', (req, res) => {
  * /api/v1/add:
  *   post:
  *     summary: Add a new user
- *     tags: [General]
+ *     tags: [2. Business Settings]
  *     requestBody:
  *       required: true
  *       content:
