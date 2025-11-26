@@ -8,24 +8,8 @@ services:
       sh -c "npm run migrate &&
              npm run seed:all &&
              npm start"
-    environment:
-      - NODE_ENV=stage
-      - APP_PORT=3030
-
-      # DB credentials
-      - DB_NAME=
-      - DB_USER=
-      - DB_PASSWORD=
-      - DB_HOST=
-      - DB_PORT=
-      - DB_SSL=
-      - DB_CLIENT_MIN_MESSAGES=
-        # jwt info
-      - JWT_SECRET_KEY=
-      - JWT_EXPIRES_IN=
-        # admin info
-      - ADMIN_EMAIL=
-      - ADMIN_PASSWORD=
+    env_file:
+      - .env   
     ports:
       - "3030:3030"
     extra_hosts:
